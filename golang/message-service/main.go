@@ -9,8 +9,8 @@ import (
 	"time"
 
 	beeline "github.com/honeycombio/beeline-go"
-	"github.com/honeycombio/beeline-go/wrappers/hnynethttp"
 	"github.com/honeycombio/beeline-go/propagation"
+	"github.com/honeycombio/beeline-go/wrappers/hnynethttp"
 )
 
 func traceParserHook(r *http.Request) *propagation.PropagationContext {
@@ -28,11 +28,12 @@ func traceParserHook(r *http.Request) *propagation.PropagationContext {
 
 func main() {
 	beeline.Init(beeline.Config{
-		WriteKey: os.Getenv("HONEYCOMB_WRITE_KEY"),
-		Dataset: os.Getenv("HONEYCOMB_DATASET"),
+		WriteKey:    os.Getenv("HONEYCOMB_WRITE_KEY"),
+		Dataset:     os.Getenv("HONEYCOMB_DATASET"),
 		ServiceName: "message-service",
-    })
-    defer beeline.Close()
+		APIHost:     "https://api-dogfood.honeycomb.io",
+	})
+	defer beeline.Close()
 
 	messages := []string{
 		"how are you?", "how are you doing?", "what's good?", "what's up?", "how do you do?",

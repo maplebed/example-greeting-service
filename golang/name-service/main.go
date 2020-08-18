@@ -21,11 +21,12 @@ import (
 
 func main() {
 	beeline.Init(beeline.Config{
-		WriteKey: os.Getenv("HONEYCOMB_WRITE_KEY"),
-		Dataset: os.Getenv("HONEYCOMB_DATASET"),
+		WriteKey:    os.Getenv("HONEYCOMB_WRITE_KEY"),
+		Dataset:     os.Getenv("HONEYCOMB_DATASET"),
 		ServiceName: "name-service-golang",
-    })
-    defer beeline.Close()
+		APIHost:     "https://api-dogfood.honeycomb.io",
+	})
+	defer beeline.Close()
 
 	namesByYear := map[int][]string{
 		2015: []string{"sophia", "jackson", "emma", "aiden", "olivia", "liam", "ava", "lucas", "mia", "noah"},
@@ -63,7 +64,7 @@ func propagateTraceHook(r *http.Request, prop *propagation.PropagationContext) m
 }
 
 func getYear(ctx context.Context) (int, context.Context) {
-	req, _ := http.NewRequest("GET", "http://localhost:6000/year", nil)
+	req, _ := http.NewRequest("GET", "http://localhost:6001/year", nil)
 	ctx, req = httptrace.W3C(ctx, req)
 	httptrace.Inject(ctx, req)
 	client := &http.Client{

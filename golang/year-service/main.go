@@ -1,15 +1,15 @@
 package main
 
 import (
-	"math/rand"
-	"os"
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
+	"os"
 	"time"
 
-	"go.opentelemetry.io/otel/api/trace"
 	"go.opentelemetry.io/otel/api/global"
+	"go.opentelemetry.io/otel/api/trace"
 	"go.opentelemetry.io/otel/instrumentation/httptrace"
 
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
@@ -25,6 +25,7 @@ func main() {
 		},
 		honeycomb.TargetingDataset(os.Getenv("HONEYCOMB_DATASET")),
 		honeycomb.WithServiceName("year-service"),
+		honeycomb.WithAPIURL("https://api-dogfood.honeycomb.io"),
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -61,4 +62,3 @@ func main() {
 
 	log.Fatal(http.ListenAndServe(":6000", mux))
 }
-

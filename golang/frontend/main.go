@@ -8,9 +8,9 @@ import (
 	"net/http"
 	"os"
 
-	"go.opentelemetry.io/otel/api/trace"
-	"go.opentelemetry.io/otel/api/global"
 	"go.opentelemetry.io/otel/api/correlation"
+	"go.opentelemetry.io/otel/api/global"
+	"go.opentelemetry.io/otel/api/trace"
 	"go.opentelemetry.io/otel/instrumentation/httptrace"
 
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
@@ -19,8 +19,8 @@ import (
 )
 
 const (
-	nameServiceUrl = "http://localhost:8000/name"
-	messageServiceUrl = "http://localhost:9000/message"
+	nameServiceUrl    = "http://localhost:8001/name"
+	messageServiceUrl = "http://localhost:9001/message"
 )
 
 func main() {
@@ -30,6 +30,7 @@ func main() {
 		},
 		honeycomb.TargetingDataset(os.Getenv("HONEYCOMB_DATASET")),
 		honeycomb.WithServiceName("frontend"),
+		honeycomb.WithAPIURL("https://api-dogfood.honeycomb.io"),
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -93,4 +94,3 @@ func makeRequest(ctx context.Context, url string) string {
 	}
 	return string(body)
 }
-
